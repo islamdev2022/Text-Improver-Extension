@@ -2,6 +2,8 @@
 
 A Chrome extension that allows you to improve selected text using a real API of gemini.
 
+NOTE : This extension is made using cursor AI IDE and buildShip (so technically it's made by Artificial Intelligence 🙂) 
+
 ## Features
 
 - Right-click context menu integration for selected text
