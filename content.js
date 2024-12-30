@@ -34,6 +34,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+// Function to check if selection is in an editable area
+function isEditableArea() {
+  if (!lastElement) return false;
+  
+  // Get the active element and its parent
+  const element = lastElement;
+  const parent = element.parentElement;
+  
+  // Check if element or its parent is editable
+  const isEditable = (el) => {
+    if (!el) return false;
+    return el.tagName.toLowerCase() === 'input' || 
+           el.tagName.toLowerCase() === 'textarea' ||
+           el.contentEditable === 'true' ||  // Standard contenteditable
+           el.getAttribute('role') === 'textbox' || // ARIA textbox
+           el.classList.contains('editable') || // Common editable class
+           el.getAttribute('g_editable') === 'true'; // Google editable
+  };
+
+  return isEditable(element) || isEditable(parent);
+}
+
+// Modify the showTooltip function
 function showTooltip(text) {
   const selection = window.getSelection();
   const range = selection.getRangeAt(0);
@@ -43,6 +66,17 @@ function showTooltip(text) {
   tooltip.style.display = 'block';
   tooltip.style.top = `${rect.bottom + window.scrollY + 10}px`;
   tooltip.style.left = `${rect.left + window.scrollX}px`;
+
+  // Disable replace button if not in editable area
+  if (!isEditableArea()) {
+    replaceButton.disabled = true;
+    replaceButton.style.opacity = '0.5';
+    replaceButton.title = 'Can only replace text in editable areas';
+  } else {
+    replaceButton.disabled = false;
+    replaceButton.style.opacity = '1';
+    replaceButton.title = 'Replace selected text';
+  }
 }
 
 // Handle copy button click
@@ -128,6 +162,7 @@ style.textContent = `
   
   .ai-tooltip-content {
     margin-bottom: 10px;
+    color: black;
   }
   
   .ai-tooltip-buttons {
