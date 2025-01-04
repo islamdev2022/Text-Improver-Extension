@@ -1,6 +1,6 @@
 # Text Improver Chrome Extension
 
-A Chrome extension that allows you to improve selected text using a real API of gemini.
+An extension that allows user to improve selected text using a real API of gemini. and copy and past it (if the selected text in an input)
 
 NOTE : This extension is made using cursor AI IDE and buildShip (so technically it's made by Artificial Intelligence 🙂) 
 
